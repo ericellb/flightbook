@@ -1,0 +1,41 @@
+Project Goals
+
+Create a web service that will search through a sample data set (JSON data) and allow a user to build a flight iternarary.
+User will choose an Origin and Destination and be able to choose either a Round Trip, One way or openjaw/multicity
+
+
+Trip Requirements
+Return flight information user will want to see Flight Number, Origin, Destination, Departure time, and arrival time.
+Trips must depart at earliest at creaton time, or 365 days after creation time at the latest. (Sample data will need additional departure_date and arrival_date)
+Support for Openjaw and multicity will be provided the same way. These are treated as multiple one way flights.
+Treating every trip search as a combination of one-way flights is the best an eastiest solution.
+Show the price of each of the flights at each stage, and the total of both flights together one both are chosen
+If flights are picked on the same day, only return a return flight that has 1 hour minimum time between arrival at destination and departure from destination.
+
+Example: Round Trip from YUL to FLL
+  User chooses YUL to FLL on November 5th 2019, and returning on November 7th 2019.
+  Search for flights with departure_airport YUL, and arrival_airport FLL and show listing of all flights on that date (Nov 5th 2019)
+  User picks his flight.
+
+  Search for flights with departure_airtport FLL, and show all lighting of flights on that date (Nov 7th 2019)
+  User picks his return flight
+
+
+Example : One way from YUL to FLL
+  This example is treated example like above.
+  User chooses YUL to FLL on November 5th 2019
+  Search for flights with departure_airport YUL, and arrival_airport FLL and show listing of all flights on that date (Nov 5th 2019)
+  User picks his flight
+
+
+Example : Openjaw / Multicity from YUL to FLL, TPA to JFK, and JFK to YUL
+  This is treated as multiple one-way treats for simplicity
+  Show user list of flights from YUL to FLL on chosen date,
+  User picks his flight
+
+  Show user list of flights from TPA to JFK on chosen date
+  User picks his flight
+
+  Show user list of flights from JFK to YUL
+  User picks his flight.
+
