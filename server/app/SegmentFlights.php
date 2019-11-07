@@ -49,6 +49,11 @@ class SegmentFlights
                     $this->sortByType($query, $sort_type);
                 })
                 ->get();
+
+            // Add current date to each flight
+            foreach ($this->flights as $flight) {
+                $flight->departure_date = $segment->getDate();
+            }
         }
     }
 

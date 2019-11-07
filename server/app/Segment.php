@@ -27,6 +27,6 @@ class Segment
 
     public function getDate()
     {
-        return $this->seg_from;
+        return $this->seg_date;
     }
 }

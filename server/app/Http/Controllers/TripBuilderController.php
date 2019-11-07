@@ -72,9 +72,7 @@ class TripBuilderController extends Controller
         // concat each array from tmp with each element from $arrays[$i]
         foreach ($arrays[$i] as $v) {
             foreach ($tmp as $t) {
-                // If segment arrives before next segment departs, its a valid trip
-                // TODO :: Only check this same day flights
-                if ($v->arrival_time < $t->departure_time) {
+                if ((isSameDayFlights($v, $t) && arrivesBefore($v, $t)) || !isSameDayFlights($v, $t)) {
                     $result[] = is_array($t) ? array_merge(array($v), $t) : array($v, $t);
                 }
             }
