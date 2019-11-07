@@ -3,8 +3,6 @@
 namespace App;
 
 use App\Flight;
-use App\Http\Controllers\Segment;
-use App\Http\Controllers\SegmentOptions;
 use Illuminate\Support\Facades\DB;
 
 class SegmentFlights

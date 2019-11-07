@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Segment;
 use App\SegmentFlights;
+use App\SegmentOptions;
 use Illuminate\Http\Request;
 
 class TripBuilderController extends Controller
@@ -94,60 +96,5 @@ class TripBuilderController extends Controller
         $sort_type = $request->input('sort', 'price');
         $filter_airline = $request->airline;
         return new SegmentOptions($sort_type, $filter_airline);
-    }
-}
-
-class Segment
-{
-    private $seg_from;
-    private $seg_to;
-    private $seg_date;
-
-    public function __construct($seg_from, $seg_to, $seg_date)
-    {
-        $this->seg_from = $seg_from;
-        $this->seg_to = $seg_to;
-        $this->seg_date = $seg_date;
-    }
-
-    public function getFrom()
-    {
-        return $this->seg_from;
-    }
-
-    public function getTo()
-    {
-        return $this->seg_to;
-    }
-
-    public function getDate()
-    {
-        return $this->seg_from;
-    }
-}
-
-class SegmentOptions
-{
-    private $sort_type;
-    private $filter_airline;
-
-    public function __construct($sort_type, $filter_airline)
-    {
-        // Filter / Validate sort type to approved types
-        if ($sort_type !== 'price ' && $sort_type !== 'departure_time' && $sort_type !== 'total_time') {
-            $sort_type = 'price';
-        }
-        $this->sort_type = $sort_type;
-        $this->filter_airline = $filter_airline;
-    }
-
-    public function getSortType()
-    {
-        return $this->sort_type;
-    }
-
-    public function getFilterAirline()
-    {
-        return $this->filter_airline;
     }
 }
