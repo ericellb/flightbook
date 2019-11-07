@@ -3,10 +3,19 @@
     "airline": "AC",
     "number": "301",
     "departure_airport": "YUL",
+    "departure_time": "13:35",
+    "arrival_airport": "YVR",
+    "arrival_time": "19:05",
+    "price": "273.23"
+  },
+  {
+    "airline": "TS",
+    "number": "743",
+    "departure_airport": "YUL",
     "departure_time": "07:35",
     "arrival_airport": "YVR",
     "arrival_time": "10:05",
-    "price": "273.23"
+    "price": "345.23"
   },
   {
     "airline": "AC",
@@ -15,6 +24,15 @@
     "departure_time": "11:30",
     "arrival_airport": "YUL",
     "arrival_time": "19:11",
+    "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "YVR",
+    "departure_time": "13:30",
+    "arrival_airport": "YUL",
+    "arrival_time": "21:11",
     "price": "220.63"
   }
 ]
