@@ -9,16 +9,10 @@ class SegmentFlights
 {
     /*
     @Function Input
-    Segment=[Segment Class]
-    segment_from
-    segment_to
-    segment_date
+    segment=[Segment]
+    segmentOptions=[SegmentOptions]
 
-    @URL Params
-    OPTIONAL
-    sort=[price | departure_time | total_time]
-    airline=[string]
-
+    @return array of flights
      */
     private $flights = [];
 

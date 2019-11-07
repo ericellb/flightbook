@@ -9,6 +9,24 @@ use Illuminate\Http\Request;
 
 class TripBuilderController extends Controller
 {
+    /*
+    Required
+    type=[oneway | roundtrip | multi]
+
+    Depending on number of segments 0-4
+    seg0_from=[string]
+    seg0_to=[string]
+    seg0_date=[string]
+    ...
+    seg4_from=[string]
+    seg4_to=[string]
+    seg4_date=[string]
+
+    Optional
+    sort=[price | departure_time | total_time]
+    ariline=[string]
+
+     */
     public function build(Request $request)
     {
         // Get trip type and calculate number of segments
