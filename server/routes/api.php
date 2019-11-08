@@ -17,4 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Trip builder router
 Route::get('/search', 'TripBuilderController@build');
+
+// Autosuggest rotue
+Route::get('/suggest', 'AutoSuggestController@search');
