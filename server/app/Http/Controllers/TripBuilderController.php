@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TripBuilderRequest;
 use App\Segment;
 use App\SegmentFlights;
 use App\SegmentOptions;
@@ -27,8 +28,11 @@ class TripBuilderController extends Controller
     ariline=[string]
 
      */
-    public function build(Request $request)
+    public function build(TripBuilderRequest $request)
     {
+
+        $request->validated();
+
         // Get trip type and calculate number of segments
         $type = $request->type;
         $number_segments = $this->calculateSegments($type);
@@ -128,7 +132,7 @@ class TripBuilderController extends Controller
 
     private function buildSegmentOptions(Request $request)
     {
-        $sort_type = $request->input('sort', 'price');
+        $sort_type = $request->sort;
         $filter_airline = $request->airline;
         return new SegmentOptions($sort_type, $filter_airline);
     }
