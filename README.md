@@ -51,24 +51,25 @@ Run phpunit
 vendor/bin/phpunit
 ```
 
-### Break down into end to end tests
+### Break down of feature tests
 
-**Request a Oneway trip**
+Request a Oneway trip
 
-- Sets the appropriate URL params and validates JSON Sctructure
+Request a Roundtrip
 
-**Request a Roundtrip**
+Request a Multi trip
 
-- Sets the appropriate URL params and validates JSON Sctructure
+Request AutoSuggestion for Airport Code
 
-**Request a Multi trip**
+Request AutoSuggestion for Airport Name
 
-- Sets the appropriate URL params and validates JSON Sctructure
+Request AutoSuggestion for Airport City Name
 
 ## Features
 
 Implemented
 
+- [x] Document Web Services
 - [x] Use data storage(s) provisioned within the environment
 - [x] Implement automated software tests
 - [x] Allow flights to be restricted to a preferred airline
@@ -80,7 +81,6 @@ Todo
 
 - [ ] Deploy the application online to ease the review process
 - [ ] Scale beyond sample data (see below)
-- [ ] Document Web Services
 - [ ] Paginate trip listings
 - [ ] Allow flights departing and/or arriving in the vicinity of requested locations
 
