@@ -48,6 +48,7 @@ class TripBuilderController extends Controller
         }
 
         $tripCombinations = $this->buildTripCombinations($segmentFlights);
+        $tripCombinations = $this->filterCombatibleFlights($tripCombinations);
 
         return ['trips' => $tripCombinations];
 
@@ -55,29 +56,47 @@ class TripBuilderController extends Controller
 
     // Carterian Product Solution taken from stackoverflow
     // https://stackoverflow.com/questions/8567082/how-to-generate-in-php-all-combinations-of-items-in-multiple-arrays
-    private function buildTripCombinations($arrays, $i = 0)
+    private function buildTripCombinations($arrays)
     {
-        if (!isset($arrays[$i])) {
-            return array();
-        }
-        if ($i == count($arrays) - 1) {
-            return $arrays[$i];
-        }
+        $result = array(array());
 
-        // get combinations from subsequent arrays
-        $tmp = $this->buildTripCombinations($arrays, $i + 1);
+        foreach ($arrays as $key => $values) {
+            $append = array();
 
-        $result = array();
-
-        // concat each array from tmp with each element from $arrays[$i]
-        foreach ($arrays[$i] as $v) {
-            foreach ($tmp as $t) {
-                if ((isSameDayFlights($v, $t) && arrivesBefore($v, $t)) || !isSameDayFlights($v, $t)) {
-                    $result[] = is_array($t) ? array_merge(array($v), $t) : array($v, $t);
+            foreach ($result as $product) {
+                foreach ($values as $item) {
+                    $product[$key] = $item;
+                    $append[] = $product;
                 }
             }
+
+            $result = $append;
         }
 
+        return $result;
+    }
+
+    private function filterCombatibleFlights($trips)
+    {
+        $result = [];
+        foreach ($trips as $trip) {
+            $tmp = [];
+            //echo json_encode($trip);
+            //echo('   ');
+            foreach ($trip as $i => $flight) {
+                if ($i <= count($trip) - 1) {
+                    if ($i === count($trip) - 1) {
+                        array_push($tmp, $flight);
+                    } else if (isSameDayFlights($flight, $trip[$i + 1]) && arrivesBefore($flight, $trip[$i + 1]) || !isSameDayFlights($flight, $trip[$i + 1])) {
+                        array_push($tmp, $flight);
+                    }
+                }
+            }
+
+            if (count($tmp) === count($trip)) {
+                array_push($result, $tmp);
+            }
+        }
         return $result;
     }
 

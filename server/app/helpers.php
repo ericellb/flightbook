@@ -1,11 +1,11 @@
 <?php
 
-function isSameDayFlights($v, $t)
+function isSameDayFlights($segment1, $segment2)
 {
-    return $v->departure_date === $t->departure_date;
+    return $segment1->departure_date === $segment2->departure_date;
 }
 
-function arrivesBefore($v, $t)
+function arrivesBefore($segment1, $segment2)
 {
-    return $v->arrival_time < $t->departure_time;
+    return $segment1->arrival_time < $segment2->departure_time;
 }
