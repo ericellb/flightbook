@@ -31,36 +31,38 @@ class TripBuilderController extends Controller
     public function build(TripBuilderRequest $request)
     {
 
+        // Validate request fields
         $request->validated();
 
         // Get trip type and calculate number of segments
         $type = $request->type;
-        $number_segments = $this->calculateSegments($type);
+        $number_segments = $this->getNumberSegments($type);
 
-        // Build trips depending on number of segements
+        // Create segment options, same for all segments
+        $segmentsOptions = new SegmentOptions($request->sort_type, $request->filter_airline);
+
+        // Create the segments
         for ($i = 0; $i < $number_segments; $i++) {
-            $segments[$i] = $this->buildSegment($request, $i);
+            $segments[$i] = $this->createSegment($request, $i);
         }
 
-        // Build segment options, same for all segments
-        $segmentsOptions = $this->buildSegmentOptions($request);
-
-        // Iterate over segments get flights for each segment
+        // Create list of Flights for each Segment
         $segmentFlights = [];
         foreach ($segments as $i => $segment) {
             $segmentFlights[$i] = (new SegmentFlights($segment, $segmentsOptions))->getFlights();
         }
 
-        $tripCombinations = $this->buildTripCombinations($segmentFlights);
-        $tripCombinations = $this->filterCombatibleFlights($tripCombinations);
+        // Build and filter trip combinations
+        $tripCombinations = $this->crossJoinTripCombinations($segmentFlights);
+        $tripCombinations = $this->filterTripCombinations($tripCombinations);
 
         return ['trips' => $tripCombinations];
 
     }
 
     // Carterian Product Solution taken from stackoverflow
-    // https://stackoverflow.com/questions/8567082/how-to-generate-in-php-all-combinations-of-items-in-multiple-arrays
-    private function buildTripCombinations($arrays)
+    // https://stackoverflow.com/questions/6311779/finding-cartesian-product-with-php-associative-arrays
+    private function crossJoinTripCombinations($arrays)
     {
         $result = array(array());
 
@@ -80,7 +82,7 @@ class TripBuilderController extends Controller
         return $result;
     }
 
-    private function filterCombatibleFlights($trips)
+    private function filterTripCombinations($trips)
     {
         $result = [];
         foreach ($trips as $trip) {
@@ -105,14 +107,14 @@ class TripBuilderController extends Controller
     }
 
     // Calculates number of segements depending on type of trip
-    private function calculateSegments($type)
+    private function getNumberSegments($type)
     {
         $number_segments = 0;
         if ($type === 'oneway') {
             $number_segments = 1;
         } else if ($type === 'roundtrip') {
             $number_segments = 2;
-        } else if (strpos($type, 'multi') !== false) {
+        } else if (!strpos($type, 'multi')) {
             $number_segments = substr($type, 5);
             if ($number_segments > 5) {
                 $number_segments = 5;
@@ -122,18 +124,11 @@ class TripBuilderController extends Controller
     }
 
     // Builds a segment Object
-    private function buildSegment(Request $request, $i)
+    private function createSegment(Request $request, $i)
     {
         ${'seg' . $i . '_from'} = $request->{'seg' . $i . '_from'};
         ${'seg' . $i . '_to'} = $request->{'seg' . $i . '_to'};
         ${'seg' . $i . '_date'} = $request->{'seg' . $i . '_date'};
         return new Segment(${'seg' . $i . '_from'}, ${'seg' . $i . '_to'}, ${'seg' . $i . '_date'});
-    }
-
-    private function buildSegmentOptions(Request $request)
-    {
-        $sort_type = $request->sort;
-        $filter_airline = $request->airline;
-        return new SegmentOptions($sort_type, $filter_airline);
     }
 }

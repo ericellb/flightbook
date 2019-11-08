@@ -5,6 +5,9 @@ namespace App;
 use App\Flight;
 use Illuminate\Support\Facades\DB;
 
+/*
+SegmentFlights describe an array of all flights for a given Segmenet
+ */
 class SegmentFlights
 {
     /*
@@ -12,7 +15,7 @@ class SegmentFlights
     segment=[Segment]
     segmentOptions=[SegmentOptions]
 
-    @return array of flights
+    @return array of Flights
      */
     private $flights = [];
 

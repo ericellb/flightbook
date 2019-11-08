@@ -2,6 +2,10 @@
 
 namespace App;
 
+/*
+Segment describes a leg of a trip
+It includes an Origin, Destination and a Date
+ */
 class Segment
 {
     private $seg_from;

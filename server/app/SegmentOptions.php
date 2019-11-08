@@ -2,6 +2,9 @@
 
 namespace App;
 
+/*
+SegmentOptions describe sorting and filters applied to SegmentFlights
+ */
 class SegmentOptions
 {
     private $sort_type;

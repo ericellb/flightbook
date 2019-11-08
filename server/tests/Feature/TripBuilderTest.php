@@ -16,7 +16,7 @@ class TripBuilderTest extends TestCase
         $this->withoutExceptionHandling();
         $searchQuery = ['type' => 'oneway', 'seg0_from' => 'YUL', 'seg0_to' => 'YVR', 'seg0_date' => 'Nov 15 2019'];
         $response = $this->json('GET', 'api/search', $searchQuery);
-        $this->assertOneWayJsonStructure($response);
+        $this->assertTripJsonStructure($response);
     }
 
     /**
@@ -50,24 +50,6 @@ class TripBuilderTest extends TestCase
 
         $response = $this->json('GET', 'api/search', $searchQuery);
         $this->assertTripJsonStructure($response);
-    }
-
-    private function assertOneWayJsonStructure($response)
-    {
-        $response->assertJsonStructure([
-            'trips' => [
-                '*' => [
-                    'id',
-                    'departure_airport',
-                    'departure_time',
-                    'arrival_airport',
-                    'arrival_time',
-                    'airline_code',
-                    'airline_number',
-                    'price',
-                ],
-            ],
-        ]);
     }
 
     private function assertTripJsonStructure($response)
