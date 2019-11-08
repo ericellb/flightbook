@@ -33,7 +33,7 @@ export const theme = createMuiTheme({
     },
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: "#2b2e4a"
+        backgroundColor: "#fff"
       }
     }
   },

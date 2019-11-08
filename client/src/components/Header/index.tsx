@@ -6,7 +6,7 @@ import {
   makeStyles,
   Container
 } from "@material-ui/core";
-import { OfflineBolt, AirplanemodeActive } from "@material-ui/icons";
+import { OfflineBolt, AirplanemodeActive, Bookmark } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: "#2b2e4a"
   },
   flex: {
     display: "flex",
@@ -24,10 +25,8 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginRight: "0.3em",
-    transform: "rotate(45deg)"
-  },
-  responsiveText: {
-    fontSize: "14px"
+    height: "100%",
+    width: "40px"
   }
 }));
 
@@ -39,12 +38,10 @@ export default function Header() {
       <Container>
         <Toolbar>
           <Typography
-            variant="h6"
-            className={
-              classes.title + " " + classes.flex + " " + classes.responsiveText
-            }
+            variant="h4"
+            className={classes.title + " " + classes.flex}
           >
-            <AirplanemodeActive className={classes.icon} /> Flightbook
+            <Bookmark className={classes.icon} /> Flightbook
           </Typography>
         </Toolbar>
       </Container>
