@@ -51,19 +51,19 @@ Run phpunit
 vendor/bin/phpunit
 ```
 
-### Break down of feature tests
+### Break down into end to end tests
 
-Request a Oneway trip
+- Request a Oneway trip
 
-Request a Roundtrip
+- Request a Roundtrip
 
-Request a Multi trip
+- Request a Multi trip
 
-Request AutoSuggestion for Airport Code
+- Request AutoSuggestion for Airport Code
 
-Request AutoSuggestion for Airport Name
+- Request AutoSuggestion for Airport Name
 
-Request AutoSuggestion for Airport City Name
+- Request AutoSuggestion for Airport City Name
 
 ## Features
 
