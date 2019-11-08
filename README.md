@@ -1,6 +1,8 @@
 # Flightbook
 
 > Trip building and navigating web service with frontend allowing you to choose Oneway, Roundtrip and Multi city trips.
+>
+> Includes an AutoSuggestion service for completing Airport Code, Name and City
 
 ## Getting Started
 
@@ -128,6 +130,43 @@ Returns JSON with Trips including Flights for each Segment
 
   ```javascript
     axios.post('http://127.0.0.1:8000/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&segd0_date=Nov 16 2019')
+    .then((res) => {
+    	console.log(res);
+    }
+  ```
+
+### AutoSuggest Service
+
+Returns JSON with auto suggested code, name and city
+
+- **URL**
+
+  /api/suggest
+
+- **Method:**
+
+  `GET`
+
+- **URL Params**
+
+  **Required:**
+
+  `query=[string]`
+
+* **Example Success Response:**
+
+  - **Code:** 200 <br />
+    **Content:** `[{"code": "YUL", "name": "Pierre Elliott Trudeau International", "city": "Montreal" }]`
+
+- **Example Error Response:**
+
+  - **Code:** 422 BAD REQUEST <br />
+    **Content:** `{ "message": "The given data was invalid.", "errors": { "query": [ "The query date field is required." ] } }`
+
+* **Sample Call:**
+
+  ```javascript
+    axios.post('http://127.0.0.1:8000/api/suggest?query=montr')
     .then((res) => {
     	console.log(res);
     }
