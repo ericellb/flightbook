@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { makeStyles, TextField } from "@material-ui/core";
 import { AirplanemodeActive, DateRange } from "@material-ui/icons";
 import {
@@ -6,6 +6,9 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import moment from "moment";
+import { Segment } from ".";
+import { object } from "prop-types";
 
 const useStyles = makeStyles(theme => ({
   flightSegment: {},
@@ -16,12 +19,11 @@ const useStyles = makeStyles(theme => ({
   },
   flightInputWrapper: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
-    marginBottom: "16px"
+    marginBottom: "8px"
   },
   flightInputLabel: {
-    width: "20%",
+    width: "18%",
     background: "#f1f1f1",
     color: "#777",
     height: "39px",
@@ -40,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     transform: "rotate(-45deg)"
   },
   flightAirportInput: {
-    width: "80%",
+    width: "82%",
     [`& fieldset`]: {
       borderRadius: 0
     },
@@ -50,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   flightDateInputWrapper: {
     height: "39px",
-    width: "80%",
+    width: "32%",
     border: "1px solid rgba(0, 0, 0, 0.23)",
     boxSizing: "border-box",
     [`& label`]: {
@@ -70,24 +72,47 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+export type TripType = "oneway" | "roundtrip" | "multi";
+
 interface FlightSegmentProps {
   segmentNumber: number;
+  segment: Segment;
+  setSegment: Function;
+  type: TripType;
 }
 
 export default function FlightSegment(props: FlightSegmentProps) {
   const classes = useStyles({});
 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [dateOpen, setDateOpen] = useState(false);
+  // Dates for our date picker
+  const minDate = moment();
+  const maxDate = moment().add(1, "year");
 
-  const handleDateChange = (date: any) => {
-    setDateOpen(false);
-    setSelectedDate(date);
+  const [dateFromOpen, setDateFromOpen] = useState(false);
+  const [dateToOpen, setDateToOpen] = useState(false);
+
+  const handleDateChange = (property: string, date: any) => {
+    property === "seg_date_from"
+      ? setDateFromOpen(false)
+      : setDateToOpen(false);
+    handleSegmentChange(property, date);
+  };
+
+  const handleSegmentChange = (property: string, value: string | Date) => {
+    props.setSegment((segment: any) =>
+      segment.map((item: any, index: any) =>
+        index === props.segmentNumber ? { ...item, [property]: value } : item
+      )
+    );
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <div className={classes.segmentTitle}>Flight {props.segmentNumber}</div>
+      {props.type === "multi" ? (
+        <div className={classes.segmentTitle}>
+          Flight {props.segmentNumber + 1}
+        </div>
+      ) : null}
       <div className={classes.flightSegment}>
         <div className={classes.flightInputWrapper}>
           <div className={classes.flightInputLabel}>
@@ -101,6 +126,8 @@ export default function FlightSegment(props: FlightSegmentProps) {
             variant="outlined"
             placeholder="Leaving from"
             className={classes.flightAirportInput}
+            value={props.segment.seg_from}
+            onChange={e => handleSegmentChange("seg_from", e.target.value)}
           />
         </div>
         <div className={classes.flightInputWrapper}>
@@ -113,6 +140,8 @@ export default function FlightSegment(props: FlightSegmentProps) {
             variant="outlined"
             placeholder="Going to"
             className={classes.flightAirportInput}
+            value={props.segment.seg_to}
+            onChange={e => handleSegmentChange("seg_to", e.target.value)}
           />
         </div>
         <div className={classes.flightInputWrapper}>
@@ -126,17 +155,49 @@ export default function FlightSegment(props: FlightSegmentProps) {
             format="MM/dd/yyyy"
             id="date-picker-inline"
             placeholder="Pick a Date"
-            open={dateOpen}
-            onOpen={() => setDateOpen(true)}
-            onClick={() => setDateOpen(true)}
-            onClose={() => setDateOpen(false)}
-            value={selectedDate}
-            onChange={handleDateChange}
+            open={dateFromOpen}
+            minDate={minDate}
+            maxDate={maxDate}
+            onOpen={() => setDateFromOpen(true)}
+            onClick={() => setDateFromOpen(true)}
+            onClose={() => setDateFromOpen(false)}
+            value={props.segment.seg_date_from}
+            onChange={e => handleDateChange("seg_date_from", e)}
             className={classes.flightDateInputWrapper}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
           />
+          {props.type !== "multi" ? (
+            <Fragment>
+              <div
+                className={classes.flightInputLabel}
+                style={{ marginLeft: "8px" }}
+              >
+                <DateRange />
+                Depart
+              </div>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                id="date-picker-inline"
+                placeholder="Pick a Date"
+                open={dateToOpen}
+                minDate={minDate}
+                maxDate={maxDate}
+                onOpen={() => setDateToOpen(true)}
+                onClick={() => setDateToOpen(true)}
+                onClose={() => setDateToOpen(false)}
+                value={props.segment.seg_date_to}
+                onChange={e => handleDateChange("seg_date_to", e)}
+                className={classes.flightDateInputWrapper}
+                KeyboardButtonProps={{
+                  "aria-label": "change date"
+                }}
+              />
+            </Fragment>
+          ) : null}
         </div>
       </div>
     </MuiPickersUtilsProvider>
