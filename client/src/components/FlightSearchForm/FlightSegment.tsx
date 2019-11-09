@@ -116,6 +116,7 @@ export default function FlightSegment(props: FlightSegmentProps) {
       }
     }
 
+    date = moment(date).format("M/D/Y");
     handleSegmentChange(property, date);
   };
 

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { makeStyles, Button, ButtonGroup } from "@material-ui/core";
 import FlightSegment, { TripType } from "./FlightSegment";
 import moment, { Moment } from "moment";
+import axios from "../AxiosClient";
+import { useDispatch } from "react-redux";
+import { updateFlights } from "../../actions";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -42,6 +45,7 @@ export interface Segment {
 
 export default function FlightSearchForm() {
   const classes = useStyles({});
+  const dispatch = useDispatch();
 
   const [tripType, setTripType] = useState<TripType>("roundtrip");
   const [numberSegments, setNumberSegments] = useState(1);
@@ -71,6 +75,30 @@ export default function FlightSearchForm() {
         : (tmpNumberSegments = numberSegments - 1);
     }
     setNumberSegments(tmpNumberSegments);
+  };
+
+  const searchFlights = async () => {
+    let searchQuery = `type=${tripType}`;
+
+    if (tripType === "multi") {
+      searchQuery += numberSegments;
+    }
+
+    for (let i = 0; i < numberSegments; i++) {
+      searchQuery += `&seg${i}_from=${segment[i].seg_from}`;
+      searchQuery += `&seg${i}_to=${segment[i].seg_to}`;
+      searchQuery += `&seg${i}_date=${segment[i].seg_date_from}`;
+      if (tripType === "roundtrip") {
+        searchQuery += `&seg1_from=${segment[i].seg_to}`;
+        searchQuery += `&seg1_to=${segment[i].seg_from}`;
+        searchQuery += `&seg1_date=${segment[i].seg_date_to}`;
+      }
+    }
+    try {
+      let res: any = await axios.get(`/api/search?${searchQuery}`);
+      let flightData = res.data.trips;
+      dispatch(updateFlights(flightData));
+    } catch {}
   };
 
   return (
@@ -144,6 +172,7 @@ export default function FlightSearchForm() {
           color="primary"
           variant="contained"
           className={classes.searchFlightButton}
+          onClick={searchFlights}
         >
           Search Flights
         </Button>
