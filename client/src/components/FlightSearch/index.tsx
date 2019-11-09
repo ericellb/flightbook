@@ -1,12 +1,12 @@
 import React from "react";
-import { makeStyles, Container } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import BackgroundImage from "../FlightSearch/backgroundImage.jpg";
 import FlightSearchForm from "../FlightSearchForm";
 
 const useStyles = makeStyles(theme => ({
   container: {
     width: "100%",
-    height: "calc(100vh - 128px)",
+    minHeight: "calc(100vh - 128px)",
     background: `#081015 url(${BackgroundImage})`,
     backgroundPosition: "center center",
     backgroundSize: "cover",

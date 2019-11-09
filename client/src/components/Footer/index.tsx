@@ -3,7 +3,7 @@ import { makeStyles, IconButton, Container } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   footer: {
-    position: "fixed",
+    position: "sticky",
     bottom: "0px",
     width: "100%",
     backgroundColor: "#2b2e4a",

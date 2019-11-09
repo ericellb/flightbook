@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -6,7 +6,7 @@ import {
   makeStyles,
   Container
 } from "@material-ui/core";
-import { OfflineBolt, AirplanemodeActive, Bookmark } from "@material-ui/icons";
+import { Bookmark } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {
