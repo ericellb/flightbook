@@ -42,8 +42,8 @@ class SegmentFlights
 
         if ($this->isValidDepartureDate($begin_of_departure_day)) {
             // Get all flights that match our criteria
-            $this->flights = Flight::where('departure_airport', $departure_airport)
-                ->where('arrival_airport', $arrival_airport)
+            $this->flights = Flight::where('departure_airport', strtoupper($departure_airport))
+                ->where('arrival_airport', strtoupper($arrival_airport))
                 ->whereBetween('departure_time', [$departure_time_min, $departure_time_max])
                 ->when($filter_airline, function ($query, $filter_airline) {
                     $this->filterByAirline($query, $filter_airline);
