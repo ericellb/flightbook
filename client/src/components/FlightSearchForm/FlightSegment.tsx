@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { Segment } from ".";
 import { object } from "prop-types";
 
@@ -78,6 +78,7 @@ interface FlightSegmentProps {
   segmentNumber: number;
   segment: Segment;
   setSegment: Function;
+  minDate: Moment | null;
   type: TripType;
 }
 
@@ -85,16 +86,29 @@ export default function FlightSegment(props: FlightSegmentProps) {
   const classes = useStyles({});
 
   // Dates for our date picker
-  const minDate = moment();
-  const maxDate = moment().add(1, "year");
+  let minDate = props.minDate;
+  if (minDate === null) {
+    minDate = moment();
+  }
+  let maxDate = moment().add(1, "year");
+
+  let minDateTo = props.segment.seg_date_from;
 
   const [dateFromOpen, setDateFromOpen] = useState(false);
   const [dateToOpen, setDateToOpen] = useState(false);
 
   const handleDateChange = (property: string, date: any) => {
-    property === "seg_date_from"
-      ? setDateFromOpen(false)
-      : setDateToOpen(false);
+    if (props.minDate) {
+      // Fixes a bug with Material Datepicker and value + minvalue onChange...
+      if (moment(props.minDate).date() !== moment(date).date()) {
+        if (property === "seg_date_from") {
+          setDateFromOpen(false);
+        } else {
+          setDateToOpen(false);
+        }
+      }
+    }
+
     handleSegmentChange(property, date);
   };
 
@@ -168,14 +182,14 @@ export default function FlightSegment(props: FlightSegmentProps) {
               "aria-label": "change date"
             }}
           />
-          {props.type !== "multi" ? (
+          {props.type === "roundtrip" ? (
             <Fragment>
               <div
                 className={classes.flightInputLabel}
                 style={{ marginLeft: "8px" }}
               >
                 <DateRange />
-                Depart
+                Return
               </div>
               <KeyboardDatePicker
                 disableToolbar
@@ -184,7 +198,7 @@ export default function FlightSegment(props: FlightSegmentProps) {
                 id="date-picker-inline"
                 placeholder="Pick a Date"
                 open={dateToOpen}
-                minDate={minDate}
+                minDate={minDateTo}
                 maxDate={maxDate}
                 onOpen={() => setDateToOpen(true)}
                 onClick={() => setDateToOpen(true)}

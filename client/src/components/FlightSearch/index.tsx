@@ -26,7 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
   searchForm: {
     padding: "64px",
-    zIndex: 10
+    zIndex: 10,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   }
 }));
 

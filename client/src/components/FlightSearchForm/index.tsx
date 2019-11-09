@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { makeStyles, Button, ButtonGroup } from "@material-ui/core";
 import FlightSegment, { TripType } from "./FlightSegment";
+import moment, { Moment } from "moment";
 
 const useStyles = makeStyles(theme => ({
   container: {
-    padding: "32px",
+    padding: "24px",
     background: "#fff",
     width: "500px"
   },
   addRemoveFlightsWrapper: {},
-  addRemoveFlightButton: {
-    marginRight: "8px"
-  },
   tripTypeInputWrapper: {
     display: "flex",
     justifyContent: "center",
@@ -23,14 +21,23 @@ const useStyles = makeStyles(theme => ({
   tripButtonSelected: {
     background: "#eceaea",
     boxShadow: "inset 0 0 5px 0 rgba(0,0,0,0.1)"
+  },
+  searchFlightWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "16px"
+  },
+  searchFlightButton: {
+    height: "54px",
+    fontSize: "18px"
   }
 }));
 
 export interface Segment {
   seg_from: string;
   seg_to: string;
-  seg_date_from: Date | null;
-  seg_date_to: Date | null;
+  seg_date_from: Moment | null;
+  seg_date_to: Moment | null;
 }
 
 export default function FlightSearchForm() {
@@ -104,36 +111,43 @@ export default function FlightSearchForm() {
       </div>
 
       {[...Array(numberSegments)].map((e, i) => {
+        let minDate: Moment | null = moment();
+        if (segment[i - 1] !== undefined) {
+          minDate = segment[i - 1].seg_date_from;
+        }
         return (
           <FlightSegment
             segmentNumber={i}
             segment={segment[i]}
             setSegment={setSegment}
             type={tripType}
+            minDate={minDate}
           />
         );
       })}
 
       {tripType === "multi" ? (
         <div className={classes.addRemoveFlightsWrapper}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.addRemoveFlightButton}
-            onClick={() => addRemoveSegment("add")}
-          >
-            Add a Flight
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.addRemoveFlightButton}
-            onClick={() => addRemoveSegment("remove")}
-          >
-            Remove a Flight
-          </Button>
+          <ButtonGroup>
+            <Button onClick={() => addRemoveSegment("add")}>
+              Add a Flight
+            </Button>
+            <Button onClick={() => addRemoveSegment("remove")}>
+              Remove a Flight
+            </Button>
+          </ButtonGroup>
         </div>
       ) : null}
+
+      <div className={classes.searchFlightWrapper}>
+        <Button
+          color="primary"
+          variant="contained"
+          className={classes.searchFlightButton}
+        >
+          Search Flights
+        </Button>
+      </div>
     </div>
   );
 }
