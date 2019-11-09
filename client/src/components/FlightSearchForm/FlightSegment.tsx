@@ -98,12 +98,19 @@ export default function FlightSegment(props: FlightSegmentProps) {
   const [dateToOpen, setDateToOpen] = useState(false);
 
   const handleDateChange = (property: string, date: any) => {
-    if (props.minDate) {
+    if (minDate) {
       // Fixes a bug with Material Datepicker and value + minvalue onChange...
-      if (moment(props.minDate).date() !== moment(date).date()) {
+      if (moment(minDate).date() !== moment(date).date()) {
         if (property === "seg_date_from") {
           setDateFromOpen(false);
-        } else {
+        }
+      }
+    }
+
+    if (minDateTo) {
+      // Fixes a bug with Material Datepicker and value + minvalue onChange...
+      if (moment(minDateTo).date() !== moment(date).date()) {
+        if (property === "seg_date_to") {
           setDateToOpen(false);
         }
       }
