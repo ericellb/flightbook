@@ -82,13 +82,17 @@ export default function FlightSearchForm() {
     }
 
     for (let i = 0; i < numberSegments; i++) {
-      searchQuery += `&seg${i}_from=${segment[i].seg_from.split(" ")[0]}`;
-      searchQuery += `&seg${i}_to=${segment[i].seg_to.split(" ")[0]}`;
-      searchQuery += `&seg${i}_date=${segment[i].seg_date_from}`;
-      if (tripType === "roundtrip") {
+      let tmpFromDate = segment[i].seg_date_from;
+      let tmpToDate = segment[i].seg_date_to;
+      if (tmpFromDate) {
+        searchQuery += `&seg${i}_from=${segment[i].seg_from.split(" ")[0]}`;
+        searchQuery += `&seg${i}_to=${segment[i].seg_to.split(" ")[0]}`;
+        searchQuery += `&seg${i}_date=${moment(tmpFromDate).format("MMM-D-YYYY")}`;
+      }
+      if (tripType === "roundtrip" && tmpToDate) {
         searchQuery += `&seg1_from=${segment[i].seg_to.split(" ")[0]}`;
         searchQuery += `&seg1_to=${segment[i].seg_from.split(" ")[0]}`;
-        searchQuery += `&seg1_date=${segment[i].seg_date_to}`;
+        searchQuery += `&seg1_date=${moment(tmpToDate).format("MMM-D-YYYY")}`;
       }
     }
     try {
