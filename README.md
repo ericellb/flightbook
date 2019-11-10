@@ -133,6 +133,14 @@ Returns JSON with Trips including Flights for each Segment
 
   `seg0_date=[date]`
 
+  `...`
+
+  `seg4_from=[string|max:3]`
+
+  `seg4_to=[string|max:3]`
+
+  `seg4_date=[date]`
+
   `type=[oneway | roundtrip | multix] where x is number of segments`
 
   **Optional:**
@@ -199,4 +207,6 @@ Returns JSON with auto suggested airport code, name and city
 
 ## License
 
-TO ADD
+Copyright Eric Ellbogen 2019
+
+- This project is under the **GNU V3** license. [Find it here](https://github.com/ericellb/flightbook/blob/master/LICENSE).
