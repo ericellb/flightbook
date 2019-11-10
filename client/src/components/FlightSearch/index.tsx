@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import BackgroundImage from "../FlightSearch/backgroundImage.jpg";
 import FlightSearchForm from "../FlightSearchForm";
+import { HashRouter, Route } from "react-router-dom";
+import FlightResults from "../FlightResults";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     background: "black",
     opacity: 0.3
   },
-  searchForm: {
+  content: {
     padding: "64px",
     zIndex: 10,
     display: "flex",
@@ -38,8 +40,11 @@ export default function FlightSearch() {
   return (
     <div className={classes.container}>
       <div className={classes.imageOverlay} />
-      <div className={classes.searchForm}>
-        <FlightSearchForm />
+      <div className={classes.content}>
+        <HashRouter>
+          <Route path="/" exact component={FlightSearchForm} />
+          <Route path="/flights" exact component={FlightResults} />
+        </HashRouter>
       </div>
     </div>
   );

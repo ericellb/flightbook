@@ -5,6 +5,7 @@ import moment, { Moment } from "moment";
 import axios from "../AxiosClient";
 import { useDispatch } from "react-redux";
 import { updateFlights } from "../../actions";
+import createHashHistory from "../../history";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -94,6 +95,7 @@ export default function FlightSearchForm() {
       let res: any = await axios.get(`/api/search?${searchQuery}`);
       let flightData = res.data.trips;
       dispatch(updateFlights(flightData));
+      createHashHistory.push("/flights");
     } catch {}
   };
 
