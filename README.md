@@ -8,7 +8,7 @@
 
 A live version of the project is viewable at [Flightbook](https://ericellb.github.io/flightbook/)
 
-A live version of the Web Service is available at https://lb.ltng.link/flightbook/
+A live version of the Web Service is available at lb.ltng.link/flightbook/
 
 Examples to test the routes provided in the API Documentation section.
 
@@ -53,6 +53,10 @@ If everything works correctly you should be able to open your browser at the fol
 ```
 http://127.0.0.1:8000/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov%2016%202019
 ```
+
+## Extending the Sample Dataset
+
+Seed files are located in server/database/data replacing those files with your own, and reseeding the database will allow you to test with an extended dataset.
 
 ## Running the tests
 
