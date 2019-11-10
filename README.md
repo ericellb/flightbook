@@ -14,7 +14,7 @@ Examples to test the routes provided in the API Documentation section.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. This project used SQLITE for ease of setup on local environments.
 
 ### Prerequisites
 
