@@ -66,13 +66,9 @@ export default function FlightSearchForm() {
   const addRemoveSegment = (action: string) => {
     let tmpNumberSegments = numberSegments;
     if (action === "add") {
-      numberSegments === 5
-        ? (tmpNumberSegments = 5)
-        : (tmpNumberSegments = numberSegments + 1);
+      numberSegments === 5 ? (tmpNumberSegments = 5) : (tmpNumberSegments = numberSegments + 1);
     } else if (action === "remove") {
-      numberSegments === 1
-        ? (tmpNumberSegments = 1)
-        : (tmpNumberSegments = numberSegments - 1);
+      numberSegments === 1 ? (tmpNumberSegments = 1) : (tmpNumberSegments = numberSegments - 1);
     }
     setNumberSegments(tmpNumberSegments);
   };
@@ -85,12 +81,12 @@ export default function FlightSearchForm() {
     }
 
     for (let i = 0; i < numberSegments; i++) {
-      searchQuery += `&seg${i}_from=${segment[i].seg_from}`;
-      searchQuery += `&seg${i}_to=${segment[i].seg_to}`;
+      searchQuery += `&seg${i}_from=${segment[i].seg_from.split(" ")[0]}`;
+      searchQuery += `&seg${i}_to=${segment[i].seg_to.split(" ")[0]}`;
       searchQuery += `&seg${i}_date=${segment[i].seg_date_from}`;
       if (tripType === "roundtrip") {
-        searchQuery += `&seg1_from=${segment[i].seg_to}`;
-        searchQuery += `&seg1_to=${segment[i].seg_from}`;
+        searchQuery += `&seg1_from=${segment[i].seg_to.split(" ")[0]}`;
+        searchQuery += `&seg1_to=${segment[i].seg_from.split(" ")[0]}`;
         searchQuery += `&seg1_date=${segment[i].seg_date_to}`;
       }
     }
@@ -107,31 +103,19 @@ export default function FlightSearchForm() {
         <ButtonGroup>
           <Button
             onClick={() => updateTripType("roundtrip")}
-            className={
-              tripType === "roundtrip"
-                ? classes.tripButtonSelected
-                : classes.tripButton
-            }
+            className={tripType === "roundtrip" ? classes.tripButtonSelected : classes.tripButton}
           >
             Round Trip
           </Button>
           <Button
             onClick={() => updateTripType("oneway")}
-            className={
-              tripType === "oneway"
-                ? classes.tripButtonSelected
-                : classes.tripButton
-            }
+            className={tripType === "oneway" ? classes.tripButtonSelected : classes.tripButton}
           >
             One way
           </Button>
           <Button
             onClick={() => updateTripType("multi")}
-            className={
-              tripType === "multi"
-                ? classes.tripButtonSelected
-                : classes.tripButton
-            }
+            className={tripType === "multi" ? classes.tripButtonSelected : classes.tripButton}
           >
             Multi-City
           </Button>
@@ -157,23 +141,14 @@ export default function FlightSearchForm() {
       {tripType === "multi" ? (
         <div className={classes.addRemoveFlightsWrapper}>
           <ButtonGroup>
-            <Button onClick={() => addRemoveSegment("add")}>
-              Add a Flight
-            </Button>
-            <Button onClick={() => addRemoveSegment("remove")}>
-              Remove a Flight
-            </Button>
+            <Button onClick={() => addRemoveSegment("add")}>Add a Flight</Button>
+            <Button onClick={() => addRemoveSegment("remove")}>Remove a Flight</Button>
           </ButtonGroup>
         </div>
       ) : null}
 
       <div className={classes.searchFlightWrapper}>
-        <Button
-          color="primary"
-          variant="contained"
-          className={classes.searchFlightButton}
-          onClick={searchFlights}
-        >
+        <Button color="primary" variant="contained" className={classes.searchFlightButton} onClick={searchFlights}>
           Search Flights
         </Button>
       </div>

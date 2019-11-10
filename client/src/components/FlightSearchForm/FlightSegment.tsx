@@ -1,14 +1,11 @@
-import React, { useState, Fragment } from "react";
-import { makeStyles, TextField } from "@material-ui/core";
+import React, { useState, Fragment, createRef } from "react";
+import { makeStyles, TextField, Popper, Paper, List, ListItem } from "@material-ui/core";
 import { AirplanemodeActive, DateRange } from "@material-ui/icons";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider
-} from "@material-ui/pickers";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import moment, { Moment } from "moment";
 import { Segment } from ".";
-import { object } from "prop-types";
+import axios from "../AxiosClient";
 
 const useStyles = makeStyles(theme => ({
   flightSegment: {},
@@ -69,6 +66,18 @@ const useStyles = makeStyles(theme => ({
     [`& div.MuiInput-underline:after`]: {
       borderBottom: "none !important"
     }
+  },
+  popperBar: {
+    top: "2px",
+    width: "410px",
+    zIndex: 200,
+    fontSize: "14px"
+  },
+  popperPaper: {
+    padding: "1em"
+  },
+  selected: {
+    backgroundColor: "rgba(0, 0, 0, 0.08)"
   }
 }));
 
@@ -91,12 +100,65 @@ export default function FlightSegment(props: FlightSegmentProps) {
     minDate = moment();
   }
   let maxDate = moment().add(1, "year");
-
   let minDateTo = props.segment.seg_date_from;
 
+  // Controls the datepicker open / close
   const [dateFromOpen, setDateFromOpen] = useState(false);
   const [dateToOpen, setDateToOpen] = useState(false);
 
+  // AutoSuggest state
+  const [predictions, setPredictions] = useState<any[]>();
+  const [selectedPrediction, setSelectedPrediction] = useState<number | null>(null);
+  const [popperOpen, setPopperOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<any>(null);
+
+  // Handles clicking on a prediction
+  const handlePredictionSelect = (prediction: any) => {
+    setPopperOpen(false);
+    prediction = prediction.code + " - " + prediction.name + `(${prediction.city})`;
+    handleSegmentChange(anchorEl.name, prediction, null);
+  };
+
+  // AutoSuggest Request and set preditions
+  const handleAutoSuggest = async (value: string, e: any) => {
+    setAnchorEl(e);
+    setPopperOpen(true);
+    try {
+      let res = await axios.get(`/api/suggest?query=${value}`);
+      console.log(res.data);
+      setPredictions(res.data);
+    } catch {}
+  };
+
+  // Handles ArrowDown + Up to Naviagate Predicitons list
+  const handleArrowNavigate = (e: any) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      let tempSelected = selectedPrediction;
+      if (tempSelected === null) {
+        tempSelected = -1;
+      }
+
+      if (e.key === "ArrowDown") {
+        tempSelected++;
+      } else if (e.key === "ArrowUp") {
+        tempSelected--;
+      }
+
+      if (tempSelected < 0) {
+        tempSelected = 0;
+      } else if (predictions && tempSelected > predictions.length - 1) {
+        tempSelected = predictions.length - 1;
+      }
+
+      setSelectedPrediction(tempSelected);
+    } else if (e.key === "Enter") {
+      if (predictions && selectedPrediction !== null) {
+        handlePredictionSelect(predictions[selectedPrediction]);
+      }
+    }
+  };
+
+  // Handles changing date using DatePicker
   const handleDateChange = (property: string, date: any) => {
     if (minDate) {
       // Fixes a bug with Material Datepicker and value + minvalue onChange...
@@ -117,30 +179,29 @@ export default function FlightSegment(props: FlightSegmentProps) {
     }
 
     date = moment(date).format("M/D/Y");
-    handleSegmentChange(property, date);
+    handleSegmentChange(property, date, null);
   };
 
-  const handleSegmentChange = (property: string, value: string | Date) => {
+  // Handles changing a specific property in our Segment state
+  const handleSegmentChange = (property: string, value: string | Date, e: any) => {
+    // Change Segment state
     props.setSegment((segment: any) =>
-      segment.map((item: any, index: any) =>
-        index === props.segmentNumber ? { ...item, [property]: value } : item
-      )
+      segment.map((item: any, index: any) => (index === props.segmentNumber ? { ...item, [property]: value } : item))
     );
+
+    // Call AutoSuggest service to show options
+    if (e !== null) {
+      handleAutoSuggest(value.toString(), e);
+    }
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      {props.type === "multi" ? (
-        <div className={classes.segmentTitle}>
-          Flight {props.segmentNumber + 1}
-        </div>
-      ) : null}
-      <div className={classes.flightSegment}>
+      {props.type === "multi" ? <div className={classes.segmentTitle}>Flight {props.segmentNumber + 1}</div> : null}
+      <div className={classes.flightSegment} onKeyDown={e => handleArrowNavigate(e)}>
         <div className={classes.flightInputWrapper}>
           <div className={classes.flightInputLabel}>
-            <AirplanemodeActive
-              className={classes.flightAirportLabelFromIcon}
-            />
+            <AirplanemodeActive className={classes.flightAirportLabelFromIcon} />
             From
           </div>
           <TextField
@@ -149,7 +210,9 @@ export default function FlightSegment(props: FlightSegmentProps) {
             placeholder="Leaving from"
             className={classes.flightAirportInput}
             value={props.segment.seg_from}
-            onChange={e => handleSegmentChange("seg_from", e.target.value)}
+            name="seg_from"
+            autoComplete="off"
+            onChange={e => handleSegmentChange("seg_from", e.target.value, e.target)}
           />
         </div>
         <div className={classes.flightInputWrapper}>
@@ -163,7 +226,9 @@ export default function FlightSegment(props: FlightSegmentProps) {
             placeholder="Going to"
             className={classes.flightAirportInput}
             value={props.segment.seg_to}
-            onChange={e => handleSegmentChange("seg_to", e.target.value)}
+            name="seg_to"
+            autoComplete="off"
+            onChange={e => handleSegmentChange("seg_to", e.target.value, e.target)}
           />
         </div>
         <div className={classes.flightInputWrapper}>
@@ -192,10 +257,7 @@ export default function FlightSegment(props: FlightSegmentProps) {
           />
           {props.type === "roundtrip" ? (
             <Fragment>
-              <div
-                className={classes.flightInputLabel}
-                style={{ marginLeft: "8px" }}
-              >
+              <div className={classes.flightInputLabel} style={{ marginLeft: "8px" }}>
                 <DateRange />
                 Return
               </div>
@@ -221,6 +283,24 @@ export default function FlightSegment(props: FlightSegmentProps) {
             </Fragment>
           ) : null}
         </div>
+        <Popper open={popperOpen} anchorEl={anchorEl} placement="bottom-start" className={classes.popperBar}>
+          <Paper className={classes.popperPaper}>
+            <List>
+              {predictions &&
+                predictions.map((prediction, i) => {
+                  return (
+                    <ListItem
+                      button
+                      onClick={() => handlePredictionSelect(prediction)}
+                      className={i === selectedPrediction ? classes.selected : ""}
+                    >
+                      {prediction.code + " - " + prediction.name + ` (${prediction.city})`}
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </Paper>
+        </Popper>
       </div>
     </MuiPickersUtilsProvider>
   );
