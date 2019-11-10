@@ -38,7 +38,7 @@ Content-Type: application/json
 
 ### Installing
 
-Follow these instructions to get the laravel service setup
+Follow these instructions to get the laravel service setup, if you wish to test locally
 
 ```
 git clone https://github.com/ericellb/flightbook.git
@@ -52,6 +52,14 @@ If everything works correctly you should be able to open your browser at the fol
 
 ```
 http://127.0.0.1:8000/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov%2016%202019
+```
+
+Follow these instructions to get the Frontend setup, if you wish to test locally
+
+```
+cd client
+npm install
+npm start
 ```
 
 ## Extending the Sample Dataset
