@@ -7,7 +7,7 @@ export type FlightActionTypes = UpdateFlightsAction;
 /* Action Types */
 export type UpdateFlightsAction = {
   type: ACTION.UPDATE_FLIGHTS;
-  payload: FlightData[];
+  payload: FlightData[][];
 };
 
 /* Interfaces for Data coming into Action Creators */
