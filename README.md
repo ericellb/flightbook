@@ -4,6 +4,14 @@
 >
 > Includes an AutoSuggestion service for completing Airport Code, Name and City
 
+## Live Version
+
+A live version of the project is viewable at [Flightbook](https://ericellb.github.io/flightbook/)
+
+A live version of the Web Service is available at https://lb.ltng.link/flightbook/
+
+Examples to test the routes provided in the API Documentation section.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes
@@ -79,17 +87,19 @@ Implemented
 - [x] Sort trip listings
 - [x] Support open-jaw trips, a pair of one-ways getting from A to B then from C to A
 - [x] Support multi-city trips, one-ways (up to 5) from A to B, B to C, C to D, etc.
+- [x] Deploy the application online to ease the review process
 
 Todo
 
-- [ ] Deploy the application online to ease the review process
 - [ ] Scale beyond sample data (see below)
 - [ ] Paginate trip listings
 - [ ] Allow flights departing and/or arriving in the vicinity of requested locations
 
 ## API Documentation
 
-### Build Trip
+Live API URL - https://lb.ltng.link/flightbook/
+
+### Build Trips
 
 Returns JSON with Trips including Flights for each Segment
 
@@ -132,7 +142,7 @@ Returns JSON with Trips including Flights for each Segment
 * **Sample Call:**
 
   ```javascript
-    axios.post('http://127.0.0.1:8000/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&segd0_date=Nov 16 2019')
+    axios.post('https://lb.ltng.link/flightbook/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov-16-2019')
     .then((res) => {
     	console.log(res);
     }
@@ -140,7 +150,7 @@ Returns JSON with Trips including Flights for each Segment
 
 ### AutoSuggest Service
 
-Returns JSON with auto suggested code, name and city
+Returns JSON with auto suggested airport code, name and city
 
 - **URL**
 
@@ -169,7 +179,7 @@ Returns JSON with auto suggested code, name and city
 * **Sample Call:**
 
   ```javascript
-    axios.post('http://127.0.0.1:8000/api/suggest?query=montr')
+    axios.post('https://lb.ltng.link/flightbook/api/suggest?query=montr')
     .then((res) => {
     	console.log(res);
     }
