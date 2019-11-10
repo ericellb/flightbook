@@ -142,7 +142,7 @@ Returns JSON with Trips including Flights for each Segment
 * **Sample Call:**
 
   ```javascript
-    axios.post('https://lb.ltng.link/flightbook/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov-16-2019')
+    axios.get('https://lb.ltng.link/flightbook/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov-16-2019')
     .then((res) => {
     	console.log(res);
     }
@@ -179,7 +179,7 @@ Returns JSON with auto suggested airport code, name and city
 * **Sample Call:**
 
   ```javascript
-    axios.post('https://lb.ltng.link/flightbook/api/suggest?query=montr')
+    axios.get('https://lb.ltng.link/flightbook/api/suggest?query=montr')
     .then((res) => {
     	console.log(res);
     }
