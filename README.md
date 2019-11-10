@@ -13,7 +13,10 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software
 
 ```
+php7.2
 php7.2-sqlite
+php7.2-xml
+php7.2-mbstring
 npm
 composer
 ```

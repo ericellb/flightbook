@@ -40,23 +40,21 @@ class SegmentFlights
         $departure_time_min = date("H:i:s", $departure_time_min);
         $departure_time_max = date("H:i:s", strtotime("tomorrow", $begin_of_departure_day) - 1);
 
-        if ($this->isValidDepartureDate($begin_of_departure_day)) {
-            // Get all flights that match our criteria
-            $this->flights = Flight::where('departure_airport', strtoupper($departure_airport))
-                ->where('arrival_airport', strtoupper($arrival_airport))
-                ->whereBetween('departure_time', [$departure_time_min, $departure_time_max])
-                ->when($filter_airline, function ($query, $filter_airline) {
-                    $this->filterByAirline($query, $filter_airline);
-                })
-                ->when($sort_type, function ($query, $sort_type) {
-                    $this->sortByType($query, $sort_type);
-                })
-                ->get();
+        // Get all flights that match our criteria
+        $this->flights = Flight::where('departure_airport', strtoupper($departure_airport))
+            ->where('arrival_airport', strtoupper($arrival_airport))
+            ->whereBetween('departure_time', [$departure_time_min, $departure_time_max])
+            ->when($filter_airline, function ($query, $filter_airline) {
+                $this->filterByAirline($query, $filter_airline);
+            })
+            ->when($sort_type, function ($query, $sort_type) {
+                $this->sortByType($query, $sort_type);
+            })
+            ->get();
 
-            // Add current date to each flight
-            foreach ($this->flights as $flight) {
-                $flight->departure_date = $segment->getDate();
-            }
+        // Add current date to each flight
+        foreach ($this->flights as $flight) {
+            $flight->departure_date = $segment->getDate();
         }
     }
 
@@ -84,11 +82,4 @@ class SegmentFlights
         return $query->where('airline_code', $filter_airline);
     }
 
-    // Verified if valid departure date ( not greater than 1 year)
-    private function isValidDepartureDate($departure_date)
-    {
-        if ($departure_date < strtotime('+1 year')) {
-            return response()->json(['error' => 'Cannot Book flights more than 1 year from today'], 403);
-        }
-    }
 }
