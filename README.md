@@ -51,7 +51,7 @@ php artisan serve
 If everything works correctly you should be able to open your browser at the following url and get a JSON response
 
 ```
-http://127.0.0.1:8000/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov%2016%202019
+http://127.0.0.1:8000/api/search?type=oneway&seg0_from=YUL&seg0_to=YVR&seg0_date=Nov-16-2019
 ```
 
 Follow these instructions to get the Frontend setup, if you wish to test locally
