@@ -22,4 +22,6 @@ export interface FlightData {
   airline_number: string;
   price: string;
   departure_date: string;
+  arrival_date: string;
+  flight_duration: string;
 }

@@ -34,9 +34,20 @@ export default function FlightResults() {
                       " @ " +
                       flight.departure_time +
                       " on " +
-                      flight.departure_date
+                      flight.departure_date +
+                      " $" +
+                      flight.price
                     }
-                    secondary={"Arrive at : " + flight.arrival_airport + " @ " + flight.arrival_time}
+                    secondary={
+                      "Arrive at : " +
+                      flight.arrival_airport +
+                      " @ " +
+                      flight.arrival_time +
+                      " on " +
+                      flight.arrival_date +
+                      " duration : " +
+                      flight.flight_duration
+                    }
                   ></ListItemText>
                 </ListItem>
                 {j === trip.length - 1 && i !== tripsList.length - 1 ? <Divider /> : null}
