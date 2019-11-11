@@ -61,7 +61,7 @@ class TripBuilderTest extends TestCase
     public function test_a_user_can_request_a_trip_in_vacinity()
     {
         $this->withoutExceptionHandling();
-        $searchQuery = ['type' => 'oneway', 'seg0_from' => 'VTS', 'seg0_to' => 'YVR', 'seg0_date' => 'Nov-15-2019'];
+        $searchQuery = ['type' => 'oneway', 'seg0_from' => 'VTM', 'seg0_to' => 'YVR', 'seg0_date' => 'Nov-15-2019'];
         $response = $this->json('GET', 'api/search', $searchQuery);
         $this->assertTripJsonStructure($response);
     }
@@ -81,6 +81,8 @@ class TripBuilderTest extends TestCase
                         'airline_number',
                         'price',
                         'departure_date',
+                        'arrival_date',
+                        'flight_duration',
                     ],
                 ],
             ],
