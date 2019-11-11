@@ -70,5 +70,59 @@
     "arrival_airport": "YUL",
     "arrival_time": "19:00",
     "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "FLL",
+    "departure_time": "06:00",
+    "arrival_airport": "JFK",
+    "arrival_time": "09:10",
+    "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "JFK",
+    "departure_time": "12:00",
+    "arrival_airport": "FLL",
+    "arrival_time": "15:10",
+    "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "FLL",
+    "departure_time": "14:00",
+    "arrival_airport": "YVR",
+    "arrival_time": "17:10",
+    "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "YVR",
+    "departure_time": "12:00",
+    "arrival_airport": "FLL",
+    "arrival_time": "18:10",
+    "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "JFK",
+    "departure_time": "14:00",
+    "arrival_airport": "YVR",
+    "arrival_time": "17:10",
+    "price": "220.63"
+  },
+  {
+    "airline": "AC",
+    "number": "302",
+    "departure_airport": "YVR",
+    "departure_time": "12:00",
+    "arrival_airport": "JFK",
+    "arrival_time": "18:10",
+    "price": "220.63"
   }
 ]
