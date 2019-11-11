@@ -82,6 +82,8 @@ vendor/bin/phpunit
 
 - Request a Multi trip
 
+- Request a Trip where one or more airports have no flights, so vacinity search is used
+
 - Request AutoSuggestion for Airport Code
 
 - Request AutoSuggestion for Airport Name
