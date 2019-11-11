@@ -52,6 +52,20 @@ class TripBuilderTest extends TestCase
         $this->assertTripJsonStructure($response);
     }
 
+    /**
+     * Tests if we can get flights departing in vacinity
+     * Only gets vacinity airports if departing from an airport with no flights at that time
+     *
+     * @return void
+     */
+    public function test_a_user_can_request_a_trip_in_vacinity()
+    {
+        $this->withoutExceptionHandling();
+        $searchQuery = ['type' => 'oneway', 'seg0_from' => 'VTS', 'seg0_to' => 'YVR', 'seg0_date' => 'Nov-15-2019'];
+        $response = $this->json('GET', 'api/search', $searchQuery);
+        $this->assertTripJsonStructure($response);
+    }
+
     private function assertTripJsonStructure($response)
     {
         return $response->assertJsonStructure([

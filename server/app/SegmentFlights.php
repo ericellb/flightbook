@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Flight;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -21,8 +20,8 @@ class SegmentFlights
 
     public function __construct(Segment $segment, SegmentOptions $segmentOptions)
     {
-        $departure_airport = $segment->getFrom();
-        $arrival_airport = $segment->getTo();
+        $departure_airport = array($segment->getFrom());
+        $arrival_airport = array($segment->getTo());
         $filter_airline = $segmentOptions->getFilterAirline();
         $sort_type = $segmentOptions->getSortType();
 
@@ -37,13 +36,33 @@ class SegmentFlights
         }
 
         // Format our time to use for following Flight query
-        $departure_time_min = date("H:i:s", $departure_time_min);
-        $departure_time_max = date("H:i:s", strtotime("tomorrow", $begin_of_departure_day) - 1);
+        $departure_times = [];
+        array_push($departure_times, date("H:i:s", $departure_time_min));
+        array_push($departure_times, date("H:i:s", strtotime("tomorrow", $begin_of_departure_day) - 1));
 
-        // Get all flights that match our criteria
-        $this->flights = Flight::where('departure_airport', strtoupper($departure_airport))
-            ->where('arrival_airport', strtoupper($arrival_airport))
-            ->whereBetween('departure_time', [$departure_time_min, $departure_time_max])
+        //Get all flights that match our criteria
+        $this->flights = $this->searchFlights($departure_airport, $arrival_airport, $departure_times, $filter_airline, $sort_type);
+
+        // If no flights found, search in vacinity of airport
+        if ($this->flights->isEmpty()) {
+            $departure_airports = Airport::getVacinityOf($departure_airport[0]);
+            $arrival_airports = Airport::getVacinityOf($arrival_airport[0]);
+            $this->flights = $this->searchFlights($departure_airports, $arrival_airports, $departure_times, $filter_airline, $sort_type);
+        }
+
+        // Add current date to each flight
+        foreach ($this->flights as $flight) {
+            $flight->departure_date = $segment->getDate();
+        }
+
+    }
+
+    // Searches for flights with input being array of departure/arrival airports and deparrture times
+    private function searchFlights($departure_airports, $arrival_airports, $departure_times, $filter_airline, $sort_type)
+    {
+        return Flight::whereIn('departure_airport', $departure_airports)
+            ->whereIn('arrival_airport', $arrival_airports)
+            ->whereBetween('departure_time', [$departure_times[0], $departure_times[1]])
             ->when($filter_airline, function ($query, $filter_airline) {
                 $this->filterByAirline($query, $filter_airline);
             })
@@ -51,11 +70,6 @@ class SegmentFlights
                 $this->sortByType($query, $sort_type);
             })
             ->get();
-
-        // Add current date to each flight
-        foreach ($this->flights as $flight) {
-            $flight->departure_date = $segment->getDate();
-        }
     }
 
     public function getFlights()

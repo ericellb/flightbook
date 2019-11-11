@@ -7,6 +7,7 @@ use App\Segment;
 use App\SegmentFlights;
 use App\SegmentOptions;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TripBuilderController extends Controller
 {
@@ -50,6 +51,11 @@ class TripBuilderController extends Controller
         $segmentFlights = [];
         foreach ($segments as $i => $segment) {
             $segmentFlights[$i] = (new SegmentFlights($segment, $segmentsOptions))->getFlights();
+
+            // If no flights found for a given segment, need to choose new airports
+            if ($segmentFlights[$i]->isEmpty()) {
+                return new Response('No flights found in vacinity, try another airport', 404);
+            }
         }
 
         // Build and filter trip combinations
