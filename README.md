@@ -100,12 +100,12 @@ Implemented
 - [x] Support open-jaw trips, a pair of one-ways getting from A to B then from C to A
 - [x] Support multi-city trips, one-ways (up to 5) from A to B, B to C, C to D, etc.
 - [x] Deploy the application online to ease the review process
+- [x] Scale beyond sample data (see below)
+- [x] Allow flights departing and/or arriving in the vicinity of requested locations (Searches for vacinity airports if original depart/arrive flights are not found)
 
 Todo
 
-- [ ] Scale beyond sample data (see below)
 - [ ] Paginate trip listings
-- [ ] Allow flights departing and/or arriving in the vicinity of requested locations
 
 ## API Documentation
 
