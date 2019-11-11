@@ -61,11 +61,11 @@ class SegmentFlights
         foreach ($this->flights as $flight) {
             $flight->departure_date = $segment->getDate();
             $flight->arrival_date = $segment->getDate();
-            $flight->flight_duration = $this->getFlightDuration($flight);
-
             if ($flight->departure_time > $flight->arrival_time) {
                 $flight->arrival_date = (new DateTime($segment->getDate() . '+1 day'))->format('M-j-Y');
             }
+
+            $flight->flight_duration = $this->getFlightDuration($flight);
         }
 
     }
@@ -115,8 +115,13 @@ class SegmentFlights
         // Find arrival airport calculate time of flight using timezone
         $departingAirport = Airport::select('timezone')->where('code', $flight->departure_airport)->firstOrFail();
         $arrivalAirport = Airport::select('timezone')->where('code', $flight->arrival_airport)->firstOrFail();
-        $departTime = date('m/d/y H:i:s', strtotime($flight->departure_time));
-        $arriveTime = date('m/d/y H:i:s', strtotime($flight->arrival_time));
+
+        // Accounts for flights going into next day (over night)
+        $tmpDepart = $flight->departure_date . ' ' . $flight->departure_time;
+        $tmpArrive = $flight->arrival_date . ' ' . $flight->arrival_time;
+
+        $departTime = date('m/d/y H:i:s', strtotime($tmpDepart));
+        $arriveTime = date('m/d/y H:i:s', strtotime($tmpArrive));
         $d1 = new DateTime($departTime, new DateTimeZone($departingAirport->timezone));
         $d2 = new DateTime($arriveTime, new DateTimeZone($arrivalAirport->timezone));
         $diff = $d1->diff($d2);
