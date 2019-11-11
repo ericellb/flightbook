@@ -11,10 +11,10 @@
     "timezone": "America/Montreal"
   },
   {
-    "code": "VTS",
+    "code": "VTM",
     "city_code": "YMT",
-    "name": "Vacinity Test Airport",
-    "city": "Vacinity-Test",
+    "name": "Vacinity Test Montreal Airport",
+    "city": "Montreal-Vacinity",
     "country_code": "CA",
     "region_code": "QC",
     "latitude": 45.468462,
@@ -26,6 +26,17 @@
     "city_code": "YVR",
     "name": "Vancouver International",
     "city": "Vancouver",
+    "country_code": "CA",
+    "region_code": "BC",
+    "latitude": 49.194698,
+    "longitude": -123.179192,
+    "timezone": "America/Vancouver"
+  },
+  {
+    "code": "VTV",
+    "city_code": "YVT",
+    "name": "Vacinity Test Vancover Airport",
+    "city": "Vancouver-Vacinity",
     "country_code": "CA",
     "region_code": "BC",
     "latitude": 49.194698,
