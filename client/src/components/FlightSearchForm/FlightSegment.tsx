@@ -30,7 +30,11 @@ const useStyles = makeStyles(theme => ({
     padding: "8px",
     boxSizing: "border-box",
     border: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRight: "none"
+    borderRight: "none",
+    [theme.breakpoints.down("xs")]: {
+      width: "30%",
+      fontSize: "12px"
+    }
   },
   flightAirportLabelFromIcon: {
     transform: "rotate(45deg)"
@@ -45,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     },
     [`& input`]: {
       padding: "10px 8px"
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "70%"
     }
   },
   flightDateInputWrapper: {
@@ -58,7 +65,10 @@ const useStyles = makeStyles(theme => ({
     },
     [`& div.MuiInput-formControl`]: {
       paddingLeft: "8px",
-      top: "4px"
+      top: "4px",
+      [theme.breakpoints.down("xs")]: {
+        paddingLeft: "0px"
+      }
     },
     [`& div.MuiInput-underline:before`]: {
       borderBottom: "none !important"
@@ -71,7 +81,10 @@ const useStyles = makeStyles(theme => ({
     top: "2px",
     width: "410px",
     zIndex: 200,
-    fontSize: "14px"
+    fontSize: "14px",
+    [theme.breakpoints.down("xs")]: {
+      width: "180px"
+    }
   },
   popperPaper: {
     padding: "1em"

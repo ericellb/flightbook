@@ -11,7 +11,12 @@ const useStyles = makeStyles(theme => ({
   container: {
     padding: "24px",
     background: "#fff",
-    width: "500px"
+    width: "500px",
+    boxSizing: "border-box",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      padding: "12px"
+    }
   },
   addRemoveFlightsWrapper: {},
   tripTypeInputWrapper: {

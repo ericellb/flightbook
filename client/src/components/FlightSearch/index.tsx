@@ -31,7 +31,12 @@ const useStyles = makeStyles(theme => ({
     zIndex: 10,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    boxSizing: "border-box",
+    width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      padding: "16px"
+    }
   }
 }));
 
